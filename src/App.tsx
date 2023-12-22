@@ -1,7 +1,9 @@
+import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import React, {useEffect, useRef, useState} from 'react';
 import * as esbuild from 'esbuild-wasm';
 import {unpkgPathPlugin} from './plugins/unpkg-path-plugin';
 import {fetchPlugin} from './plugins/fetch-plugin';
+import CodeEditor from './components/code-editor';
 
 const App: React.FC = () => {
   const [input, setInput] = useState('');
@@ -65,10 +67,19 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <textarea rows={5} cols={39} value={input} onChange={e => setInput(e.target.value)}></textarea>
+      <CodeEditor 
+        initialValue='const a = 1;'
+        onChange={(value) => setInput(value)}
+      />
+      <textarea 
+        rows={5} 
+        cols={39} 
+        value={input}
+        onChange={e => {setInput(e.target.value)}}>
+      </textarea>
       <div>
         <button onClick={onClick}>Submit</button>
-        </div>
+      </div>
       <iframe title='preview' ref={iframeRef} srcDoc={html} sandbox='allow-scripts'/>
     </div>
   );
