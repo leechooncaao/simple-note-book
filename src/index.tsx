@@ -1,12 +1,17 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import CodeCell from './components/code-cell';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-root.render(
-    <App />
-);
 
+const App = () => {
+  return (
+    <div>
+      <CodeCell />
+    </div>  
+  );
+};
+
+root.render(<App />);

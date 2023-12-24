@@ -1,22 +1,35 @@
 import { useEffect, useRef } from "react";
+import './preview.css';
 
 interface PreviewProps {
     code: string;
+    err: string;
 }
 
 const html = `
   <html>
-    <head></head>
+    <head>
+      <style>html { background-color: white; }</style>
+    </head>
     <body>
       <div id="root"></div>
       <script>
+        const handleError = (err) => {
+          const root = document.getElementById('root');
+          root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>';
+          console.error(err);
+        }
+
+        window.addEventListener('error', (event) => {
+          event.preventDefault();
+          handleError(event.error);
+        })
+
         window.addEventListener('message', (event) => {
           try {
             eval(event.data);
           } catch (err) {
-            const root = document.getElementById('root');
-            root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>';
-            console.error(err);
+            handleError(err);
           }  
         }, false);
       </script>
@@ -24,16 +37,25 @@ const html = `
   </html>
   `;
 
-const Preview: React.FC<PreviewProps> = ({ code }) => {
+const Preview: React.FC<PreviewProps> = ({ code, err }) => {
     const iframeRef = useRef<any>();
 
     useEffect(() => {
         iframeRef.current.srcdoc = html;
-        iframeRef.current.contentWindow.postMessage(code, '*');
+        setTimeout(() => {
+          iframeRef.current.contentWindow.postMessage(code, '*');
+        }, 50);
     }, [code]);
 
-
-    return <iframe title='preview' ref={iframeRef} srcDoc={html} sandbox='allow-scripts' />;
+    return <div className="preview-wrapper">
+      <iframe 
+        title='preview' 
+        ref={iframeRef} 
+        srcDoc={html} 
+        sandbox='allow-scripts'
+      />
+      {err && <div className='preview-error'>{err}</div>}
+    </div>;
 };
 
 export default Preview;

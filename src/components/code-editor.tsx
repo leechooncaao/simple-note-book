@@ -31,7 +31,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
   }
   
   const onChangeValue = (value: string | undefined) => {
-    const currentValue = value || '';
+    const currentValue = value ?? '';
     onChange(currentValue);
     setValue(currentValue);
   }
@@ -64,7 +64,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
       <MonacoEditor
         onChange={onChangeValue}
         value={value}
-        height='500px' 
+        height='100%' 
         language='javascript'
         theme='vs-dark'
         options={editorOptions}
