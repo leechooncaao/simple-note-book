@@ -1,4 +1,3 @@
-import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import React, {useEffect, useState} from 'react';
 import bundle from '../bundler';
 import CodeEditor from './code-editor';

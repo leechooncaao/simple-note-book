@@ -1,6 +1,6 @@
 const webpack = require("webpack")
 
-module.exports = function override(config, env) {
+module.exports = function override (config, env) {
   config.resolve.fallback = {
     ...config.resolve.fallback,
     constants: require.resolve('constants-browserify'),
@@ -17,10 +17,18 @@ module.exports = function override(config, env) {
   config.plugins = [
     ...config.plugins,
     new webpack.ProvidePlugin({
-        process: "process/browser",
-        Buffer: ["buffer", "Buffer"],
+      process: "process/browser",
+      Buffer: [ "buffer", "Buffer" ],
     }),
-]
-  
+  ];
+  config.module.rules.push({
+    test: /\.(js|mjs|jsx)$/,
+    enforce: "pre",
+    loader: require.resolve("source-map-loader"),
+    resolve: {
+      fullySpecified: false,
+    },
+  });
+
   return config;
 };
