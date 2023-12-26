@@ -24,6 +24,10 @@
 .text-editor .wmde-markdown ol {
   list-style: decimal;
 }
+
+.text-editor .wmde-markdown {
+  background-color: unset;
+} 
  
 .text-editor .w-md-editor-show-live {
   /* Hide menu bar buttons to prevent accidental delete */
@@ -40,7 +44,7 @@
 }
  
 .text-editor .w-md-editor-content {
-  background-color: #202123;
+  /* background-color: #202123; */
 }
  
 .text-editor .w-md-editor,

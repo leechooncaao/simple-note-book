@@ -5,9 +5,9 @@ import monaco from 'monaco-editor';
 import prettier from 'prettier';
 import * as prettierPluginBabel from 'prettier/plugins/babel';
 import * as prettierPluginEstree from "prettier/plugins/estree";
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import Highlighter from 'monaco-jsx-highlighter';
-import { parse } from '@babel/parser';
+import {parse} from '@babel/parser';
 import traverse from '@babel/traverse';
 
 interface CodeEditorProps {
@@ -15,12 +15,12 @@ interface CodeEditorProps {
   onChange(value: string): void;
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
   const [value, setValue] = useState(initialValue);
 
   const editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
     wordWrap: 'on',
-    minimap:  { enabled: false },
+    minimap: {enabled: false},
     showUnused: false,
     folding: false,
     lineNumbersMinChars: 3,
@@ -29,7 +29,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
     automaticLayout: true,
     tabSize: 2
   }
-  
+
   const onChangeValue = (value: string | undefined) => {
     const currentValue = value ?? '';
     onChange(currentValue);
@@ -55,7 +55,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
 
   return (
     <div className='editor-wrapper'>
-      <button 
+      <button
         className='button button-format is-primary is-small'
         onClick={onFormatClick}
       >
@@ -64,7 +64,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
       <MonacoEditor
         onChange={onChangeValue}
         value={value}
-        height='100%' 
+        height='100%'
         language='javascript'
         theme='vs-dark'
         options={editorOptions}

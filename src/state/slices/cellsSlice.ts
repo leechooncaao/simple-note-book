@@ -14,8 +14,19 @@ interface CellsState {
 const initialState: CellsState = {
   loading: false,
   error: null,
-  order: [],
-  data: {}
+  order: ['1', '2'],
+  data: {
+    '1': {
+      id: '1',
+      content: '',
+      type: 'code'
+    },
+    '2': {
+      id: '2',
+      content: '',
+      type: 'text'
+    }
+  }
 }
 
 const cellsSlice = createSlice({
@@ -39,7 +50,7 @@ const cellsSlice = createSlice({
       delete state.data[id];
     },
 
-    insertBefore: (state, { payload }: PayloadAction<InsertCellBeforePayload>) => {
+    insertAfter: (state, { payload }: PayloadAction<InsertCellBeforePayload>) => {
       const cell: Cell = {
         content: '',
         type: payload.type,
@@ -50,8 +61,8 @@ const cellsSlice = createSlice({
 
       const index = state.order.findIndex(id => id === payload.id);
 
-      if (index < 0) state.order.push(cell.id);
-      else state.order.splice(index, 0, cell.id);
+      if (index < 0) state.order.unshift(cell.id);
+      else state.order.splice(index + 1, 0, cell.id);
     },
 
     update: (state, { payload }: PayloadAction<UpdateCellPayload>) => {
@@ -63,6 +74,6 @@ const cellsSlice = createSlice({
 
 const randomId = () => (Math.random().toString(36).substring(2, 5));
 
-export const {move, deleteCell, insertBefore, update } = cellsSlice.actions;
+export const {move, deleteCell, insertAfter, update } = cellsSlice.actions;
 
 export default cellsSlice.reducer;
