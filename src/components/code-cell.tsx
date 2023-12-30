@@ -5,6 +5,7 @@ import Preview from './preview';
 import Resizable from './resizable';
 import {Cell, startBundling, update} from '../state';
 import {useAppDispatch, useAppSelector} from '../hooks';
+import {selectCumulativeCode} from '../state/selectors';
 
 interface CodeCellProps {
   cell: Cell;
@@ -13,21 +14,23 @@ interface CodeCellProps {
 const CodeCell: React.FC<CodeCellProps> = ({cell}) => {
   const dispatch = useAppDispatch();
   const bundle = useAppSelector(state => state.bundles[cell.id])
+  const cumulativeCode = useAppSelector(state => selectCumulativeCode(state, cell)).join('\n');
 
   useEffect(() => {
     if (!bundle) {
-      dispatch(startBundling({cellId: cell.id, input: cell.content}));
+      dispatch(startBundling({cellId: cell.id, input: cumulativeCode}));
       return;
     }
 
     const timer = setTimeout(() => {
-      dispatch(startBundling({cellId: cell.id, input: cell.content}));
+      dispatch(startBundling({cellId: cell.id, input: cumulativeCode}));
     }, 750);
 
     return () => {
       clearTimeout(timer);
     }
-  }, [cell.content, cell.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cumulativeCode, cell.id]);
 
   return (
     <Resizable direction='vertical'>

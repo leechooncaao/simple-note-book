@@ -21,36 +21,12 @@ const bundle = async (rawCode: string) => {
         define: {
           'process.env.NODE_ENV': '"production"',
           global: 'window'
-        }
+        },
+        jsxFactory: '_React.createElement',
+        jsxFragment: '_React.Fragment'
     });
 
-    // throw Error('ahihi');
-
     return { code: result.outputFiles[0].text };
-
-    // try {
-    //     const result = await esbuild.build({
-    //         entryPoints: ['index.js'],
-    //         bundle: true,
-    //         write: false,
-    //         plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
-    //         define: {
-    //           'process.env.NODE_ENV': '"production"',
-    //           global: 'window'
-    //         }
-    //     });
-
-    //     return { code: result.outputFiles[0].text, err: '' };
-    // } catch (error) {
-    //     if (error instanceof Error) {
-    //         return {
-    //           code: "",
-    //           err: error.message,
-    //         };
-    //     } else {
-    //         throw error;
-    //     }
-    // }
 };
 
 export default bundle;
